@@ -1,7 +1,8 @@
 # main.py
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 import pandas as pd
-from os import path
+from os import path, stat
 import json
 from json.decoder import JSONDecodeError
 
@@ -26,7 +27,7 @@ async def calcul(data: str):
     df = []
     # On vérifie que le fichier existe
     if path.isfile(filename) is False:
-        raise Exception("File not found")
+        pass
     # Sinon
     else: 
         with open(filename) as f:
@@ -41,7 +42,7 @@ async def calcul(data: str):
         try:
             # On ajoute notre requête à notre liste
             df.append({"id":len(df), "operation":str(data), "resultat":calc})
-            f.write(json.dumps(df, indent=2))
+            f.write(json.dumps(df, indent=4))
         except:
             raise Exception("Erreur lors de l'enregistrement")
     
@@ -49,20 +50,16 @@ async def calcul(data: str):
 
 @app.get("/getCsv")
 async def get_data():
-    # On initialise un tableau vide
-    df = []
-    # On vérifie que le fichier existe
-    if path.isfile(filename) is False:
-        raise Exception("File not found")
-    # Sinon
+    # On vérifie que le fichier existe et qu'il a un poid supérieur à 0 kilo-Octet
+    if (path.isfile(filename) is True) and (stat(filename).st_size > 0):
+        # On récupère les données du fichier pour les stocker dans un DataFrame
+        df = pd.read_json(filename)
+        df.to_csv("db.csv", index=False)
+        # On prépare l'envoi du fichier .csv
+        response = FileResponse('db.csv', media_type="text/csv")
+        # On indique qu'il s'agit d'un fichier de type .csv dans l'en-tête de la réponse
+        response.headers["Content-Disposition"] = "attachment; filename=downloaded_file.csv"
+        return response
+    # Sinon on renvoi une erreur
     else: 
-        with open(filename) as f:
-            # On essaie de charger le fichier json
-            try:
-                df = json.load(f)
-                pdf = pd.read_json(df)
-                pdf.to_csv('./files/db.csv', index=False)
-            # Si le fichier est vide alors on lève l'exception
-            except JSONDecodeError:
-                pass
-    return df
+        return {"result":"Aucune donnée disponible"}
