@@ -6,10 +6,10 @@ Cet API permet :
 
 Routes utilisables via l'url localhost:8000 :
 - "/docs" Interface fastApi permettant d'utiliser les routes plus facilement
-- "/calcul" (insérer en paramètre le tableau sous forme de chaine de caractère) :
-    Renvoi le résultat de l'expression envoyé
-- "/getCsv" :
-    Renvoi toutes les anciennes opérations (expressions et résultat) sous format .csv
+- "/calcul" (insérer en paramètre le tableau sous forme de chaine de caractère) : \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Renvoi le résultat de l'expression envoyé
+- "/getCsv" : \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Renvoi toutes les anciennes opérations (expressions et résultat) sous format .csv
 
 Pour créer un conteneur, lancer les commandes suivantes :
 - docker image build . -t "nom_souhaité"
