@@ -4,9 +4,9 @@ Cet API permet :
 - Effectuer des calculs en NPI grâce à une liste envoyé sous forme d'une chaine de charactère sous la forme suivante : [1, 2, "+", 6, '5', "*", "+"]
 - Récupérer tous les calculs effectués sous format .csv.
 
-Pour créer un conteneur et le lancer :
-- lancer la commande : docker image build . -t "nom_souhaité"
-- docker container run -t nom_souhaité:latest -p 8000:8000
+Pour créer un conteneur, lancer les commandes suivantes :
+- docker image build . -t "nom_souhaité"
+- docker run -p 8000:8000 npi_api
 
 __________
 
