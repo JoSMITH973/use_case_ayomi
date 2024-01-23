@@ -1,0 +1,7 @@
+# Fichiers et dossiers à ne pas commit
+.env
+/__pycache__
+/env
+
+suivi.txt
+data.json
